@@ -1,0 +1,6 @@
+features_extractor_class:
+  _target_: easyRL.custom_policies.policies.BasicCustomCNN
+  _partial_: true
+features_extractor_kwargs:
+  features_dim: 128
+net_arch: []
