@@ -8,6 +8,7 @@ from omegaconf import OmegaConf
 
 log = logging.getLogger(__name__)
 
+
 def create_experiment_folder(
     path_to_outputs,
     algo_name,
@@ -20,7 +21,6 @@ def create_experiment_folder(
 
     if not os.path.exists(final_path):
         os.makedirs(final_path)
-
 
     list_of_experiments = [f.path for f in os.scandir(final_path) if f.is_dir()]
     list_of_experiments.sort()
@@ -64,16 +64,18 @@ def create_experiment_folder(
 
     return dirs
 
+
 def log_configs(path, cfg):
     log.info(f"Experiment starts with config: {cfg}")
     output_path = os.path.join(path, "config.yaml")
     with open(output_path, "w") as f:
         OmegaConf.save(cfg, f)
 
+
 def log_to_description(path, message):
     log.info(message)
-    text_file = open(os.path.join(path,"description.txt"), "a")
-    text_file.write("\n"+message)
+    text_file = open(os.path.join(path, "description.txt"), "a")
+    text_file.write("\n" + message)
     text_file.close()
 
 
@@ -81,8 +83,12 @@ def log_training_time(path):
     text_file = open(os.path.join(path, "description.txt"), "r+")
     lines = text_file.readlines()
 
-    start_time = dt.datetime.strptime(lines[2].strip(), 'Training starts on: %Y-%m-%d %H:%M:%S')
-    end_time = dt.datetime.strptime(lines[3].strip(), 'Training ends on: %Y-%m-%d %H:%M:%S')
+    start_time = dt.datetime.strptime(
+        lines[2].strip(), "Training starts on: %Y-%m-%d %H:%M:%S"
+    )
+    end_time = dt.datetime.strptime(
+        lines[3].strip(), "Training ends on: %Y-%m-%d %H:%M:%S"
+    )
 
     training_time = end_time - start_time
     training_minutes = training_time.total_seconds() / 60
@@ -93,6 +99,7 @@ def log_training_time(path):
     text_file.write(message)
     text_file.close()
 
+
 def evaluate_and_make_gif(env, model, n_games, dirs):
     path_gif = dirs["gifs"]
     path_logger = dirs["logger"]
@@ -101,7 +108,7 @@ def evaluate_and_make_gif(env, model, n_games, dirs):
         "episodes_lens": [],
     }
 
-    for game in range(1, n_games+1):
+    for game in range(1, n_games + 1):
         log.info(f"Game nr {game}")
 
         done = False
@@ -113,7 +120,7 @@ def evaluate_and_make_gif(env, model, n_games, dirs):
 
         while not done:
             action, _states = model.predict(obs)
-            obs, rewards, done, truncated, _info= env.step(action)
+            obs, rewards, done, truncated, _info = env.step(action)
 
             # 'done' don't change when max_episode_steps riches :(
             done = done or truncated
@@ -125,13 +132,12 @@ def evaluate_and_make_gif(env, model, n_games, dirs):
         stats["episodes_lens"].append(ep_len)
         stats["episodes_rews"].append(ep_rew)
 
-        imageio.mimsave(
-            os.path.join(path_gif, f"gif_game_nr_{game}.gif"), images
-        )
+        imageio.mimsave(os.path.join(path_gif, f"gif_game_nr_{game}.gif"), images)
 
     log.info(f" TODO: write something about it {stats}")
     stats_df = pd.DataFrame(stats)
     stats_df.to_csv(os.path.join(path_logger, "df_logger_val.csv"))
+
 
 def create_plots():
     pass

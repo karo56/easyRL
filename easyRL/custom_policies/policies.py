@@ -7,7 +7,7 @@ from stable_baselines3.common.torch_layers import BaseFeaturesExtractor
 
 class BasicCustomCNN(BaseFeaturesExtractor):
     def __init__(self, observation_space, features_dim=256):
-        """ Remember that number_of_pixels is based on output image shape"""
+        """Remember that number_of_pixels is based on output image shape"""
         super(BasicCustomCNN, self).__init__(observation_space, features_dim)
         # We assume CxHxW images (channels first)
 
@@ -16,7 +16,6 @@ class BasicCustomCNN(BaseFeaturesExtractor):
         # TODO: create automatic calculation
         H = observation_space.shape[1]
         W = observation_space.shape[2]
-
 
         # Define the CNN layers
         self.conv1 = nn.Conv2d(
@@ -31,7 +30,6 @@ class BasicCustomCNN(BaseFeaturesExtractor):
 
         # Define max-pooling layers
         self.maxpool = nn.MaxPool2d(kernel_size=2, stride=2)
-
 
         number_of_pixels = 33280
         # Define fully connected layers
@@ -86,7 +84,7 @@ class CustomMLP(BaseFeaturesExtractor):
             nn.Linear(128, 64),
             nn.ReLU(),
             nn.Linear(64, 32),
-            nn.ReLU()
+            nn.ReLU(),
         )
 
     def forward(self, observations):

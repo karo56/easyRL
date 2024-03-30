@@ -7,7 +7,7 @@ log = logging.getLogger(__name__)
 
 def prepare_env(
     env_name,
-    render_mode='rgb_array',
+    render_mode="rgb_array",
     list_of_observation_wrappers=[],
     list_of_action_wrappers=[],
     list_of_reward_wrappers=[],

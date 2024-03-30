@@ -4,7 +4,9 @@ pandas==2.2.1
 torch==2.2.1
 stable-baselines3==2.2.1
 imageio==2.34.0
+
 black==24.3.0
+isort==5.13.2
 notebook==7.1.2
 
 swig==4.2.1

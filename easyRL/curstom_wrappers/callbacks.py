@@ -1,6 +1,6 @@
+import glob
 import logging
 import os
-import glob
 
 import imageio
 import pandas as pd
@@ -24,7 +24,6 @@ class MakeGifCallback(BaseCallback):
 
         return True
 
-
     def _make_gif(self):
         stats = {
             "episodes_rews": [],
@@ -34,7 +33,6 @@ class MakeGifCallback(BaseCallback):
         obs, _info = self.eval_env.reset()
         # note: obs is tuple: (obs, info), so we should take only obs
         # see here: https://stable-baselines3.readthedocs.io/en/master/guide/custom_env.html
-
 
         images = []
         images.append(self.eval_env.render())

@@ -1,6 +1,5 @@
 from setuptools import Extension, find_packages, setup
 
-
 with open("requirements.txt", "r") as f:
     install_requires = f.read().split("\n")
 

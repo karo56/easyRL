@@ -1,6 +1,7 @@
 import datetime as dt
 import logging
 import os
+
 import hydra
 import numpy as np
 import pandas as pd
@@ -64,7 +65,12 @@ def main(cfg: DictConfig):
     )
 
     log.info(f"Preparing model (algo_name: {algo_name})")
-    model = hydra.utils.instantiate(cfg.model, env=env, policy_kwargs=cfg.policy_net, tensorboard_log=dirs["tensorboard"])
+    model = hydra.utils.instantiate(
+        cfg.model,
+        env=env,
+        policy_kwargs=cfg.policy_net,
+        tensorboard_log=dirs["tensorboard"],
+    )
 
     # actor_network = model.policy  # Actor network
     # log.info(f"Policy architecture: {actor_network}")
@@ -89,7 +95,6 @@ def main(cfg: DictConfig):
 
     log.info("Creating final plots")
     create_plots()  # TODO: create plots
-
 
     log.info("Everything is done! Bye! bye!")
 
