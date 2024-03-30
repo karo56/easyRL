@@ -11,5 +11,3 @@ root:
   handlers: [console]
 
 disable_existing_loggers: false
-
-#format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s" # TODO: choose one

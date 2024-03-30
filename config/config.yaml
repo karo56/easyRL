@@ -20,7 +20,7 @@ hydra:
 n_envs: 4
 
 # The total number of samples (env steps) to train on
-total_timestamps: 20_000
+total_timesteps: 20_000
 
 # The number of episodes before logging.
 log_interval: 1_000

@@ -1,6 +1,6 @@
 # @package _global_
 defaults:
-  - override /env: mountain_car
+  - override /env: lunar_lander
   - override /model: dqn
   - override /policy_net: default
 
