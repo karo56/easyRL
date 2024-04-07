@@ -13,7 +13,7 @@ on multiple models on multiple network architectures?
 We can use the library/template **easyRL** ☺️
 
 These repository use the stable-baseline3 library and it's functions to make simple
-experimenting with ability to easy change models/architectures and RL environments, and the hydra library to manage all configs.
+experimenting with ability to easy change models/architectures and RL environments and the hydra library to manage all configs.
 If you have your own RL environment and want to train any net on it, instead of writing everything from scratch, you can use this code.
 
 The main advantages of the library:
@@ -134,7 +134,7 @@ python steps/training.py \
   total_timesteps=20_000 \      <- this changes numer of timesteps
   model.buffer_size=10_000 \    <- we change bufer size in dqn
   model.learning_rate=0.0001 \  <- we change learning rate
-  policy_net=TODO               <- we change net architecture
+  policy_net=custom_mlp         <- we change net architecture
 ```
 
 We can also change it in `config/model` files, but please remember that you change it for every new run
@@ -148,13 +148,23 @@ TODO
 
 
 <details>
-<summary><b>Run experiment with experiment params </b></summary>
-TODO
+<summary><b>Run experiment without experiment config </b></summary>
+If you don't like use experiments config or you just want to run simple experiment you don't have to use it.
+Below examples :)
 </details>
 
 
 <details>
 <summary><b>Change default value in config </b></summary>
+TODO
+</details>
+
+
+
+<details>
+<summary><b>Use CNN nets </b></summary>
+Very large number of environments have representation by image. It is then worth using the CNN network, below are some examples of how to do it.
+Auto-cnn.
 TODO
 </details>
 

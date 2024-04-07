@@ -140,4 +140,5 @@ def evaluate_and_make_gif(env, model, n_games, dirs):
 
 
 def create_plots():
+    # TODO: add plots
     pass

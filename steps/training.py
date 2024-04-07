@@ -42,6 +42,7 @@ def main(cfg: DictConfig):
     log.info(f"Start preparing training envs (numer of envs: {cfg.n_envs:_})")
 
     def make_custom_env():
+        # TODO: fix it
         env = prepare_env(**cfg.env)
         return env
 
@@ -72,8 +73,8 @@ def main(cfg: DictConfig):
         tensorboard_log=dirs["tensorboard"],
     )
 
-    # actor_network = model.policy  # Actor network
-    # log.info(f"Policy architecture: {actor_network}")
+    actor_network = model.policy  # Actor network
+    log.info(f"Policy architecture: {actor_network}")
 
     log.info("##################### START TRAINING #####################")
     message = f"Training starts on: {dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"

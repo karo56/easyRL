@@ -4,5 +4,6 @@
 echo "Start experiment"
 python steps/training.py \
   experiment=lunar_lander_dqn \
-  total_timesteps=20_000
+  total_timesteps=20_000 \
+  policy_net=custom_mlp
 echo "End experiment"

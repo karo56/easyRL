@@ -2,5 +2,5 @@ features_extractor_class:
   _target_: easyRL.custom_policies.policies.CustomMLP
   _partial_: true
 features_extractor_kwargs:
-  features_dim: 128
+  features_dim: 32
 net_arch: []
