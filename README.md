@@ -1,4 +1,5 @@
-![GitHub Logo](https://github.com/karo56/easyRL/blob/images/logo.png)
+[//]: # (![GitHub Logo]&#40;https://github.com/karo56/easyRL/blob/images/logo.png&#41;)
+<img src="https://github.com/karo56/easyRL/blob/images/logo.png" alt="GitHub Logo" width="200" height="100">
 
 <div align="center">
 
