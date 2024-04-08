@@ -2,7 +2,7 @@
 <div align="center">
 <img src="https://github.com/karo56/easyRL/blob/images/logo.png" alt="GitHub Logo" width="350" height="350">
 
-
+# 
 
 [![Static Badge](https://img.shields.io/badge/python%203.11-blue?style=for-the-badge&logo=python&logoColor=white&color=blue)](https://www.python.org/)
 [![Static Badge](https://img.shields.io/badge/gymnasium-black?style=for-the-badge&link=https%3A%2F%2Fgymnasium.farama.org%2F)](https://gymnasium.farama.org/)
