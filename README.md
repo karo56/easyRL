@@ -1,4 +1,4 @@
-![GitHub Logo](https://github.com/username/repository/blob/branch_name/images/logo.png)
+![GitHub Logo](https://github.com/karo56/easyRL/blob/images/logo.png)
 
 <div align="center">
 
@@ -15,7 +15,6 @@
 
 <div align="center">
 
-[//]: # (![]&#40;https://github.com/ashleve/lightning-hydra-template/blob/resources/terminal.png&#41;)
 </div>
 
 ## 🚀 Quick introduction  🚀
@@ -84,7 +83,7 @@ bash bash/run_training.sh
 ## Structure of project
 
 ### Pipeline
-TODO
+![](https://github.com/karo56/easyRL/blob/images/pipeline.png)
 
 ### Description of files
 
