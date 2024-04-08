@@ -291,7 +291,7 @@ TODO
 TODO
 </details>
 
-TODO: look how beatuy is it, multple env, multple algos, simple code
+[//]: # (TODO: look how beatuy is it, multple env, multple algos, simple code )
 
 ## References
 If you want to read some good repos, those are my inspirations:
