@@ -5,10 +5,26 @@ import hydra
 import numpy as np
 import pandas as pd
 import streamlit as st
+import matplotlib.pyplot as plt
+
 from omegaconf import DictConfig
 
 from easyRL import get_project_root
 
+st.set_option('deprecation.showPyplotGlobalUse', False)
+st.set_page_config(layout="wide")
+
+def _remove_top_bar():
+    st.markdown("""
+            <style>
+                   .block-container {
+                        padding-top: 0rem;
+                        padding-bottom: 0rem;
+                        padding-left: 5rem;
+                        padding-right: 5rem;
+                    }
+            </style>
+            """, unsafe_allow_html=True)
 
 def _list_directories(path):
     return sorted([d for d in os.listdir(path) if os.path.isdir(os.path.join(path, d))])
@@ -43,33 +59,59 @@ def dashboard_print_estimation_times(df_monitor, cfg, experiment_path):
     delta = time_now - time_starts
     full_training_time = delta * (training_steps / steps_number)
 
-    st.write(f"Training starts at **{time_starts.strftime('%H:%M:%S %Y-%m-%d')}**")
-    st.write(f"Current training time: **{_format_timedelta(delta)}**")
+    col1, col2 = st.columns(2)
 
-    st.write(f"Number of games played: {len(df_monitor)}")
-    st.write(
-        f"Number of steps: **{steps_number:_}** / **{training_steps:_}**, this is **{np.round(steps_number / training_steps * 100, 3)}**% of traning"
-    )
+    # st.write(":heavy_minus_sign:" * 44)
 
-    st.write(":heavy_minus_sign:" * 34)
-    st.write("### Estimations:")
-    st.write(
-        f"Estimation of hour when training ends: **{(time_starts + full_training_time).strftime('%H:%M:%S %Y-%m-%d')}**"
-    )
-    st.write(
-        f"Estimation time when training ends: **{_format_timedelta(full_training_time - delta)}**"
-    )
-    st.write(
-        f"Estimation of TOTAL training time: **{_format_timedelta(full_training_time)}**"
-    )
+    with col1:
+        st.write("### Information about experiment:")
+
+        st.write(f"Training starts at **{time_starts.strftime('%H:%M:%S %Y-%m-%d')}**")
+        st.write(f"Current training time: **{_format_timedelta(delta)}**")
+
+        st.write(f"Number of games played: {len(df_monitor)}")
+        st.write(
+            f"Number of steps: **{steps_number:_}** / **{training_steps:_}**, this is **{np.round(steps_number / training_steps * 100, 3)}**% of traning"
+        )
+
+    with col2:
+        st.write("### Estimations:")
+        st.write(
+            f"Estimation of hour when training ends: **{(time_starts + full_training_time).strftime('%H:%M:%S %Y-%m-%d')}**"
+        )
+        st.write(
+            f"Estimation time when training ends: **{_format_timedelta(full_training_time - delta)}**"
+        )
+        st.write(
+            f"Estimation of TOTAL training time: **{_format_timedelta(full_training_time)}**"
+        )
+
+
+def plot_multiple_lists(time, value, value_2, value_3, length_or_reward):
+    plt.figure(figsize=(12, 5))
+
+    # Plotting value vs. time
+    plt.plot(time, value, label=length_or_reward)
+
+    # Plotting value_2 vs. time
+    plt.plot(time, value_2, label=f'{length_or_reward} avg 10')
+
+    # Plotting value_3 vs. time
+    plt.plot(time, value_3, label=f'{length_or_reward} avg 100')
+
+    plt.xlabel('Number of games')
+    plt.ylabel(length_or_reward)
+    plt.title(f'{length_or_reward} for environment: {env_name} and algorithm {algo_id}')
+    plt.legend()
+
+    st.pyplot()
 
 
 def dashboard_create_plots(df_monitor, length_or_reward):
 
-    value = list(df_monitor["l"])  # y axis
+    x = "l" if length_or_reward == "Lengths" else "r"
+    value = list(df_monitor[x])  # y axis
     time = list(range(len(value)))  # x axis
-
-    last_n = len(value)
 
     N = 10
     value_2 = [np.nan] * N + value
@@ -79,12 +121,7 @@ def dashboard_create_plots(df_monitor, length_or_reward):
     value_3 = [np.nan] * N + value
     value_3 = [np.nanmean(value_3[i : i + N]) for i in range(1, len(value_3) - N + 1)]
 
-    # create plots
-    df_to_plot = pd.DataFrame({"x": time, "y": value})
-    st.line_chart(df_to_plot.set_index("x"))
-
-    df_to_plot = pd.DataFrame({"x": time, "y": value_2})
-    st.line_chart(df_to_plot.set_index("x"))
+    plot_multiple_lists(time, value, value_2, value_3, length_or_reward)
 
 
 @hydra.main(
@@ -93,7 +130,10 @@ def dashboard_create_plots(df_monitor, length_or_reward):
     version_base=None,
 )
 def main(cfg: DictConfig):
-    # TODO: fix plots, refresh everything
+    global env_name, algo_id
+
+    # remove top bar
+    _remove_top_bar()
 
     output_folder = cfg.path_to_outputs
     st.title("EasyRL experiments monitoring")
@@ -117,7 +157,13 @@ def main(cfg: DictConfig):
             _list_directories(os.path.join(output_folder, env_name, algo_id)),
         )
 
-    if st.button("Refresh experiment"):
+    with col1:
+        col1, col2 = st.columns([0.7, 1.3])
+        with col1:
+            button = st.button("Refresh experiment")
+        with col2:
+            st.warning('Please remember to refresh the experiment', icon="⚠️")
+    if button:
         # Read logger
         experiment_path = os.path.join(
             output_folder, env_name, algo_id, experiment_name
@@ -126,7 +172,15 @@ def main(cfg: DictConfig):
         df_monitor = pd.read_csv(path_monitor, skiprows=[0])
 
         dashboard_print_estimation_times(df_monitor, cfg, experiment_path)
-        dashboard_create_plots(df_monitor, "l")
+
+        st.write('### Plots:')
+        col1, col2 = st.columns(2)
+
+        with col1:
+            dashboard_create_plots(df_monitor, 'Lengths')
+
+        with col2:
+            dashboard_create_plots(df_monitor, 'Rewards')
 
 
 if __name__ == "__main__":

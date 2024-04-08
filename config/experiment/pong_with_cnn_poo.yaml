@@ -6,5 +6,9 @@ defaults:
 
 model:
   policy: "CnnPolicy"
+  batch_size: 128
 
 experiment_name: "pong_with_cnn_poo"
+
+
+# TODO add wrappers
