@@ -15,7 +15,7 @@
 
 <div align="center">
 
-![](https://github.com/ashleve/lightning-hydra-template/blob/resources/terminal.png)
+[//]: # (![]&#40;https://github.com/ashleve/lightning-hydra-template/blob/resources/terminal.png&#41;)
 </div>
 
 ## 🚀 Quick introduction  🚀
