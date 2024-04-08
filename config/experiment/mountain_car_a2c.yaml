@@ -1,7 +1,0 @@
-# @package _global_
-defaults:
-  - override /env: mountain_car
-  - override /model: a2c
-  - override /policy_net: default
-
-experiment_name: "mountain_car_with_a2c"

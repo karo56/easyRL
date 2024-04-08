@@ -1,7 +1,0 @@
-# @package _global_
-defaults:
-  - override /env: lunar_lander
-  - override /model: dqn
-  - override /policy_net: default
-
-experiment_name: "mountain_car_with_dqn"

@@ -1,4 +1,0 @@
-_target_: stable_baselines3.A2C
-verbose: 1
-policy: "MlpPolicy"
-device: "cuda"
