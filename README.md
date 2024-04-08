@@ -1,6 +1,21 @@
+![GitHub Logo](https://github.com/username/repository/blob/branch_name/images/logo.png)
+
 <div align="center">
 
 #  🏆 👾 🎮 EasyRL library 🎮 👾  🏆
+</div>
+
+[![Static Badge](https://img.shields.io/badge/python%203.11-blue?style=for-the-badge&logo=python&logoColor=white&color=blue)](https://www.python.org/)
+[![Static Badge](https://img.shields.io/badge/gymnasium-black?style=for-the-badge&link=https%3A%2F%2Fgymnasium.farama.org%2F)](https://gymnasium.farama.org/)
+[![Static Badge](https://img.shields.io/badge/stable--baseline3-white?style=for-the-badge)](https://stable-baselines3.readthedocs.io/en/master/)
+[![Static Badge](https://img.shields.io/badge/hydra-sky?style=for-the-badge&labelColor=33b8ff&color=33b8ff)](https://hydra.cc/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=for-the-badge&logo=PyTorch&logoColor=white)](https://pytorch.org/)
+
+![Static Badge](https://img.shields.io/badge/licence-mit-%20%23ffa833?style=for-the-badge&labelColor=grey)
+
+<div align="center">
+
+![](https://github.com/ashleve/lightning-hydra-template/blob/resources/terminal.png)
 </div>
 
 ## 🚀 Quick introduction  🚀
@@ -143,20 +158,46 @@ not only for one experiment (but maybe this is what you want to do 😍)
 
 <details>
 <summary><b>Create new experiment </b></summary>
-TODO
+
+You can create config experiment file (see examples in dir: ```config/experiment/..```).
+In this file you can write configuration on specific experiment. 
+For example, you want to check how _PPO_ algo with specific parameters works on _PongNoFrameskip-v4_ environment.
+Of course, you can write everything in argparse arguments, but you can also write simple experiment file and use it.
+This allows you to save this experiment and its specifications. This is nice if you want to reproduce experiment later.
+
+Let's see examples!
+
+1) Experiment 1
+
+2) Experiment 2 
+
+
+You switch experiments and params just change one line in file ```bash/run_training.sh``` file
+
+1) Run experiment 1
+2) Run experiment 2
+
+
 </details>
 
 
 <details>
 <summary><b>Run experiment without experiment config </b></summary>
 If you don't like use experiments config or you just want to run simple experiment you don't have to use it.
+But remeber: you have to define model and environment! (There is not default model and enviroment :))
 Below examples :)
 </details>
 
 
 <details>
 <summary><b>Change default value in config </b></summary>
+
+If you want to change some defult parameters to when you run every experiment is super simple.
+Just go to file ```config/config.yaml``` file and change it. For example default value _total_timesteps_
+from 20_000 into 1_000_000:
+
 TODO
+
 </details>
 
 
@@ -250,6 +291,8 @@ TODO
 <summary><b>TODO </b></summary>
 TODO
 </details>
+
+TODO: look how beatuy is it, multple env, multple algos, simple code
 
 ## References
 If you want to read some good repos, those are my inspirations:
