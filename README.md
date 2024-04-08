@@ -1,7 +1,6 @@
 [//]: # (![GitHub Logo]&#40;https://github.com/karo56/easyRL/blob/images/logo.png&#41;)
-<img src="https://github.com/karo56/easyRL/blob/images/logo.png" alt="GitHub Logo" width="400" height="400">
-
 <div align="center">
+<img src="https://github.com/karo56/easyRL/blob/images/logo.png" alt="GitHub Logo" width="350" height="350">
 
 #  🏆 👾 🎮 EasyRL library 🎮 👾  🏆
 </div>
