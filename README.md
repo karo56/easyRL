@@ -58,13 +58,19 @@ because many people use different ones, and adding such a library is very simple
 I encourage you to add your favorite._ 😊 
 Instead of it I created dashboard based on [streamlit](https://streamlit.io/)  library. More information [below](#dashboard). 
 ## Installation
-To install, simply run the command below instead of _<your_env_name>_ specify your own environment name.
+To install, firstly clone repo with code:
+```yaml
+git clone https://github.com/karo56/easyRL.git
+cd easyRL
+```
+
+After that, simply run the command below instead of _<your_env_name>_ specify your own environment name.
 ```yaml
 conda create -n <your_env_name> python=3.11.8
 conda activate <your_env_name>
 pip install -e .
 ```
-
+Now, installation is done and you can use this library. 🎉🎉
 
 ## 💻 Machine configuration 
 Code used on ubuntu >= **22.04** \
@@ -81,10 +87,11 @@ Run from root folder with:
 bash bash/run_training.sh
 ```
 
-## Structure of project
+## 📄 Structure of project
 
 ### Pipeline
-Every RL experiment have structure like graph below. TODO
+To run every RL experiment we should have structured pipeline.
+For easyRL we propose the following pipeline structure:
 ![](https://github.com/karo56/easyRL/blob/images/pipeline.png)
 
 ### Description of files
@@ -427,8 +434,13 @@ I hope this is super simply (if not, let me know! 😭) and below you can find s
 <details>
 <summary><b>How to use easyRL for own envs?</b></summary>
 
-only gym
-TODO
+Stable-baseline3 can use only Gymnasium envs, so if you can use this easyRL for all envs from 
+[list](https://www.gymlibrary.dev/index.html).
+
+If you want to create custom env this have to written in Gym convention. This shouldn't be 
+a big problem, because most of environments are written in this convention.
+
+TODO Duckietown
 </details>
 
 <details>
@@ -440,7 +452,30 @@ TODO
 
 <details>
 <summary><b>How to add own RL algorithms like e.g. TRPO? </b></summary>
-only stable-baseline3 but we have https://sb3-contrib.readthedocs.io/en/master/guide/install.html
+We use stable-baseline3 library to train models, so we can use only algorithms form this library.
+List is quite long, so probably you would find all models you need. 
+[Click here to find current list of models](https://stable-baselines3.readthedocs.io/en/master/guide/algos.html)
+
+If you want to add new model, just go to ```config/model/..``` create new yaml file (like other ones) 
+and use it 😊 
+
+Unfortunately, not all algorithms are implemented in stable-baseline3 , 
+in which case all we can do is cry.... 
+or alternatively, use the stable-baseline3 extension package with additional models.
+
+Here you can find link:
+https://sb3-contrib.readthedocs.io/en/master/guide/install.html
+
+and list of extra algorithms:
+https://sb3-contrib.readthedocs.io/en/master/guide/algos.html
+
+To install just execute:
+
+```
+pip install sb3-contrib
+```
+_Note: It is impossible to not use stable-baseline3 as library with implementation of RL algos_
+
 </details>
 
 <details>
@@ -511,6 +546,12 @@ Now we have to define render mode when env is inited, so we should use "rgb_arra
 <summary><b>How to track experiments? </b></summary>
 TODO
 </details>
+
+<details>
+<summary><b> How to use it package? </b></summary>
+TODO
+</details>
+
 
 <details>
 <summary><b>TODO </b></summary>
