@@ -539,6 +539,7 @@ As I wrote above, for the sake of simplifying the library, I did not add such a 
 
 In older version of Gym library we could choose render model when we made `env.render(mode=xxx)`. 
 Now we have to define render mode when env is inited, so we should use "rgb_array" because of `MakeGifCallback`.
+(this is callback is written by myself and you can find code here: [callbacks.py](easyRL%2Fcurstom_wrappers%2Fcallbacks.py))
 </details>
 
 
