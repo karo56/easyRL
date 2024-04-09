@@ -13,7 +13,6 @@ from easyRL.curstom_wrappers.callbacks import MakeGifCallback
 from easyRL.prepare_env.prepare_env import prepare_env
 from easyRL.utils.utils import (
     create_experiment_folder,
-    create_plots,
     evaluate_and_make_gif,
     log_configs,
     log_to_description,
@@ -99,11 +98,7 @@ def main(cfg: DictConfig):
     log.info("Start evaluating model")
     evaluate_and_make_gif(val_env, model, cfg.eval_games_number, dirs)
 
-    log.info("Creating final plots")
-    create_plots()  # TODO: create plots
-
     log.info("Everything is done! Bye! bye!")
-
 
 if __name__ == "__main__":
     main()

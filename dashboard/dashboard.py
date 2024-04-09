@@ -1,6 +1,7 @@
 import datetime as dt
 import os
 
+import yaml
 import hydra
 import matplotlib.pyplot as plt
 import numpy as np
@@ -50,10 +51,17 @@ def _format_timedelta(delta):  # TODO: add descriptions
 
     return f"{days} days {hours} hours {minutes} minutes"
 
+def _read_yaml_config(config_path):
+    with open(config_path, 'r') as yaml_file:
+        config_dict = yaml.safe_load(yaml_file)
+    return config_dict
 
-def dashboard_print_estimation_times(df_monitor, cfg, experiment_path):
+
+def dashboard_print_estimation_times(df_monitor, experiment_path):
     steps_number = df_monitor["l"].sum()
-    training_steps = cfg["total_timesteps"]
+
+    config_dict = _read_yaml_config(os.path.join(experiment_path, "params", "config.yaml"))
+    training_steps = config_dict["total_timesteps"]
 
     description_path = os.path.join(experiment_path, "description.txt")
 
@@ -180,7 +188,7 @@ def main(cfg: DictConfig):
         path_monitor = os.path.join(experiment_path, "logger", "monitor.csv")
         df_monitor = pd.read_csv(path_monitor, skiprows=[0])
 
-        dashboard_print_estimation_times(df_monitor, cfg, experiment_path)
+        dashboard_print_estimation_times(df_monitor, experiment_path)
 
         st.write("### Plots:")
         col1, col2 = st.columns(2)

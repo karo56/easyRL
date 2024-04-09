@@ -141,8 +141,3 @@ def evaluate_and_make_gif(
     log.info(f" TODO: write something about it {stats}")
     stats_df = pd.DataFrame(stats)
     stats_df.to_csv(os.path.join(path_logger, "df_logger_val.csv"))
-
-
-def create_plots() -> None:
-    # TODO: add plots
-    pass

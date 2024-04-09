@@ -15,7 +15,7 @@
 
 
 #  🏆 👾 🎮 EasyRL library 🎮 👾  🏆
-Every RL experiment have structure like graph below. TODO
+
 </div>
 
 ## 🚀 Quick introduction  🚀
@@ -84,6 +84,7 @@ bash bash/run_training.sh
 ## Structure of project
 
 ### Pipeline
+Every RL experiment have structure like graph below. TODO
 ![](https://github.com/karo56/easyRL/blob/images/pipeline.png)
 
 ### Description of files
@@ -159,7 +160,7 @@ not only for one experiment (but maybe this is what you want to do 😍)
 <details>
 <summary><b>Create new experiment </b></summary>
 
-You can create config experiment file (see examples in dir: ```config/experiment/..```).
+You can create experiment config file (see examples in dir: ```config/experiment/..```).
 In this file you can write configuration on specific experiment. 
 For example, you want to check how _PPO_ algo with specific parameters works on _PongNoFrameskip-v4_ environment.
 Of course, you can write everything in argparse arguments, but you can also write simple experiment file and use it.
@@ -169,23 +170,73 @@ Let's see examples!
 
 1) Experiment 1
 
+We run PPO algo on env ```PongNoFrameskip-v4``` with ```batch_size = 128``` and ```learning_rate = 000.1```
+
+We add everything to file ```pong_with_cnn_poo.yaml```:
+```yaml
+defaults:
+  - override /env: pong_no_frame_skip
+  - override /model: ppo
+  - override /policy_net: default
+
+model:
+  policy: "CnnPolicy"
+  batch_size: 128
+  learning_rate: 000.1
+
+experiment_name: "pong_with_cnn_poo"
+```
+
 2) Experiment 2 
 
+Now, we create config params file ```mountain_car_a2c.yaml```:
+```yaml
+TODO
+```
 
 You switch experiments and params just change one line in file ```bash/run_training.sh``` file
 
-1) Run experiment 1
-2) Run experiment 2
+Now, if we want to switch experiments we just change one line of code 
+before run ```bash/run_training.sh``` script
 
+1) Run experiment 1
+```yaml
+python steps/training.py \
+  experiment=pong_with_cnn_poo \ <- change this line
+  total_timesteps=20_000 
+```
+
+2) Run experiment 2
+```yaml
+python steps/training.py \
+  experiment=lunar_lander_dqn \ <- change this line
+  total_timesteps=20_000 
+```
+Easy(RL)? Yes. 😍 
 
 </details>
 
 
 <details>
 <summary><b>Run experiment without experiment config </b></summary>
+
 If you don't like use experiments config or you just want to run simple experiment you don't have to use it.
 But remeber: you have to define model and environment! (There is not default model and enviroment :))
-Below examples :)
+
+**Let's see example:**
+
+We have to define env and model parameters in argparse. 
+So for env parameters we choose one from yaml files from ```config/env/..``` folder and 
+for model  we choose one from ```config/model/..``` folder.
+(without the _.yaml_ suffix ❗)
+
+```yaml
+python steps/training.py \
+  env=bipedal_walker \
+  model=ppo \
+  total_timesteps=20_000
+```
+
 </details>
 
 
@@ -194,9 +245,46 @@ Below examples :)
 
 If you want to change some defult parameters to when you run every experiment is super simple.
 Just go to file ```config/config.yaml``` file and change it. For example default value _total_timesteps_
-from 20_000 into 1_000_000:
+from 50_000 into 1_000_000:
 
-TODO
+```yaml
+# @package _global_
+defaults:
+  - _self_
+  - env: null
+  - model: null
+  - policy_net: default
+
+  - experiment: null
+
+  - override hydra/job_logging: custom
+
+hydra:
+  output_subdir: null
+  run:
+    dir: .
+
+
+# number of envs to train model
+n_envs: 4
+
+# The total number of samples (env steps) to train on
+total_timesteps: 1_000_000   💥 <- we had 50_000 💥
+
+# The number of episodes before logging.
+log_interval: 1_000
+
+# eval_frequency to save model and make gif, eval_frequency have to be >= 1
+eval_frequency: 2
+
+# dir of storage all experiments
+path_to_outputs: "outputs/experiments"
+
+# description of experiment
+description: "This is experiment description, we can write whatever we want"
+experiment_name: "name"
+```
+**Of course we can change all of parameters not only one or defult env/model/policy_net etc.**
 
 </details>
 
@@ -204,9 +292,130 @@ TODO
 
 <details>
 <summary><b>Use CNN nets </b></summary>
+
 Very large number of environments have representation by image. It is then worth using the CNN network, below are some examples of how to do it.
-Auto-cnn.
-TODO
+For some experiments you can choose default cnn net from stable-baseline3 library. 
+We have to change ```model.policy``` to ```"CnnPolicy"```
+
+This is from file ```config/experiment/pong_with_cnn_ppo.yaml```
+```yaml
+# @package _global_
+defaults:
+  - override /env: pong_no_frame_skip
+  - override /model: ppo
+  - override /policy_net: default
+
+model:
+  policy: "CnnPolicy"
+  batch_size: 128
+  learning_rate: 000.1
+
+experiment_name: "pong_with_cnn_poo"
+```
+and run from root folder: ```bash bash/run_training.sh```:
+
+```bash
+python steps/training.py \
+  env=pong_with_cnn_ppo
+```
+
+What is more important in many cases, we may want to use some of our own net architecture. 
+An example network is ```BasicCustomCNN``` from ```easyRL/custom_policies/policies.py```
+You can create your own, just inspire by code of this net.
+
+<details>
+<summary><b>Code</b></summary>
+
+You can also go to  ```easyRL/custom_policies/policies.py``` and see.
+```python
+class BasicCustomCNN(BaseFeaturesExtractor):
+    def __init__(self, observation_space: gym.Space, features_dim: int = 256):
+        super(BasicCustomCNN, self).__init__(observation_space, features_dim)
+        # We assume CxHxW images (channels first)
+
+        C = observation_space.shape[0]
+        H = observation_space.shape[1]
+        W = observation_space.shape[2]
+
+        self.cnn = nn.Sequential(
+            nn.Conv2d(
+                in_channels=C, out_channels=32, kernel_size=3, stride=1, padding=1
+            ),
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=2, stride=2),
+            nn.Conv2d(
+                in_channels=32, out_channels=32, kernel_size=3, stride=1, padding=1
+            ),
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=2, stride=2),
+            nn.Conv2d(
+                in_channels=32, out_channels=64, kernel_size=3, stride=1, padding=1
+            ),
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=2, stride=2),
+        )
+
+        # take auto number of pixels after cnn
+        out_shape = self._get_output_shape_cnn(C, H, W)
+
+        # Define fully connected layers
+        self.fc1 = nn.Linear(out_shape, features_dim)
+
+        self._initialize_weights()
+
+    def _get_output_shape_cnn(self, C: int, H: int, W: int) -> int:
+        random_observation = torch.rand(1, C, H, W)
+        with torch.no_grad():
+            x = self.cnn(random_observation)
+            x = x.reshape(x.size(0), -1)
+
+        return x.size()[1]
+
+    def _initialize_weights(self) -> None:
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                init.xavier_uniform_(m.weight, gain=init.calculate_gain("relu"))
+                if m.bias is not None:
+                    init.constant_(m.bias, 0)
+            elif isinstance(m, nn.Linear):
+                init.xavier_uniform_(m.weight, gain=init.calculate_gain("relu"))
+                if m.bias is not None:
+                    init.constant_(m.bias, 0)
+
+    def forward(self, observations: Tensor) -> Tensor:
+        # Forward pass through the cnn
+        x = self.cnn(observations)
+
+        # Flatten the feature map
+        x = x.reshape(x.size(0), -1)
+
+        # Go to fc net
+        x = torch.relu(self.fc1(x))
+
+        return x
+```
+</details>
+
+Now, just add this net to ```config/policy_net``` folder.
+
+This is example of file ```custom_cnn.yaml```. If you want to use own net. 
+Just change this line:
+
+__target_: easyRL.custom_policies.policies.BasicCustomCNN_
+
+This is how file looks like: 
+```yaml
+features_extractor_class:
+  _target_: easyRL.custom_policies.policies.BasicCustomCNN
+  _partial_: true
+features_extractor_kwargs:
+  features_dim: 128
+net_arch: []
+```
+Note: if you want to read more about custom nets in stable-basleline3
+clik here: [link](https://stable-baselines3.readthedocs.io/en/master/guide/custom_policy.html) 
+or just trust me that works good 🙈 🙉 🙊
+
 </details>
 
 
@@ -249,6 +458,8 @@ TODO
 </details>
 
 ## 📊 📈  <a name="dashboard"></a> Tracking experiments 
+
+### EasyRL dashboard
 RL experiments take a very long time, sometimes even many days/weeks. 
 It is good to know how experiment perform and have estimation time when experiments end.
 All these features have dashboard created with [streamlit](https://streamlit.io/) package. 
@@ -259,13 +470,27 @@ bash bash/run_dashboard.sh
 ```
 Now, just go to http://localhost:8501 choose your env, algorithm and experiment to see how it performs.
 
+TODO add figure
+
+When you choose your env/algorithm/experiment you have to click "Refresh experiment" button.
+If the experiment is going on you have to click this button to ... refresh experiment 😐 
+
+TODO add figure
+
+When you refresh experment you can see some nice plots, and estimation when experiments.
 
 _Note: envs, algorithms and experiments are based on outputs/experiments folder. If this folder is empty, you would see nothing special on this dashboard_ 😥 
 
 
-TODO: you can also use tensorboard loger if you want :)
+### Tensorboard
+Stable-baseline3 offers use tensorboard to tracking experiments.
+EasyRL saves tensorboard logs in ```experiments/env/algo/experiment_name/tensorboard``` folder by default.
 
-## 
+So, if you want to use tensorboard just run:
+
+TODO
+
+and go to localhost.
 
 ##  F&Q
 <details>

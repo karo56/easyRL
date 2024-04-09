@@ -4,7 +4,7 @@ defaults:
   - _self_
   - env: null
   - model: null
-  - policy_net: null
+  - policy_net: default
 
   - experiment: null
 
@@ -15,12 +15,11 @@ hydra:
   run:
     dir: .
 
-
 # number of envs to train model
 n_envs: 4
 
 # The total number of samples (env steps) to train on
-total_timesteps: 20_000
+total_timesteps: 50_000
 
 # The number of episodes before logging.
 log_interval: 1_000
