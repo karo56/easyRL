@@ -15,6 +15,7 @@
 
 
 #  🏆 👾 🎮 EasyRL library 🎮 👾  🏆
+Every RL experiment have structure like graph below. TODO
 </div>
 
 ## 🚀 Quick introduction  🚀

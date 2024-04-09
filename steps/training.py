@@ -3,9 +3,7 @@ import logging
 import os
 
 import hydra
-import numpy as np
-import pandas as pd
-from omegaconf import DictConfig, OmegaConf
+from omegaconf import DictConfig
 from stable_baselines3.common.callbacks import CheckpointCallback
 from stable_baselines3.common.env_util import make_vec_env
 from stable_baselines3.common.vec_env import VecMonitor
@@ -13,7 +11,14 @@ from stable_baselines3.common.vec_env import VecMonitor
 from easyRL import get_project_root
 from easyRL.curstom_wrappers.callbacks import MakeGifCallback
 from easyRL.prepare_env.prepare_env import prepare_env
-from easyRL.utils.utils import *
+from easyRL.utils.utils import (
+    create_experiment_folder,
+    create_plots,
+    evaluate_and_make_gif,
+    log_configs,
+    log_to_description,
+    log_training_time,
+)
 
 log = logging.getLogger(__name__)
 

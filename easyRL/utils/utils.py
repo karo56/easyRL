@@ -4,20 +4,22 @@ import os
 
 import imageio
 import pandas as pd
+from gymnasium import Env
 from omegaconf import OmegaConf
+from stable_baselines3.common.base_class import BaseAlgorithm
 
 log = logging.getLogger(__name__)
 
 
 def create_experiment_folder(
-    path_to_outputs,
-    algo_name,
-    env_name,
-    description="This is base description of experiment.",
-    experiment_name="name",
-):
+    path_to_outputs: str,
+    algo_name: str,
+    env_name: Env,
+    description: str = "This is base description of experiment.",
+    experiment_name: str = "name",
+) -> dict:
     final_path = os.path.join(path_to_outputs, env_name, algo_name)
-    print("final_path", final_path)
+    log.info(f"final_path: {final_path}")
 
     if not os.path.exists(final_path):
         os.makedirs(final_path)
@@ -65,21 +67,21 @@ def create_experiment_folder(
     return dirs
 
 
-def log_configs(path, cfg):
+def log_configs(path: str, cfg: dict) -> None:
     log.info(f"Experiment starts with config: {cfg}")
     output_path = os.path.join(path, "config.yaml")
     with open(output_path, "w") as f:
         OmegaConf.save(cfg, f)
 
 
-def log_to_description(path, message):
+def log_to_description(path: str, message: str) -> None:
     log.info(message)
     text_file = open(os.path.join(path, "description.txt"), "a")
     text_file.write("\n" + message)
     text_file.close()
 
 
-def log_training_time(path):
+def log_training_time(path: str) -> None:
     text_file = open(os.path.join(path, "description.txt"), "r+")
     lines = text_file.readlines()
 
@@ -100,7 +102,9 @@ def log_training_time(path):
     text_file.close()
 
 
-def evaluate_and_make_gif(env, model, n_games, dirs):
+def evaluate_and_make_gif(
+    env: Env, model: BaseAlgorithm, n_games: int, dirs: dict
+) -> None:
     path_gif = dirs["gifs"]
     path_logger = dirs["logger"]
     stats = {
@@ -139,6 +143,6 @@ def evaluate_and_make_gif(env, model, n_games, dirs):
     stats_df.to_csv(os.path.join(path_logger, "df_logger_val.csv"))
 
 
-def create_plots():
+def create_plots() -> None:
     # TODO: add plots
     pass

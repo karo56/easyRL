@@ -1,13 +1,13 @@
+import gymnasium as gym
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 import torch.nn.init as init
 from stable_baselines3.common.torch_layers import BaseFeaturesExtractor
+from torch import Tensor
 
-from functools import reduce
 
 class BasicCustomCNN(BaseFeaturesExtractor):
-    def __init__(self, observation_space, features_dim=256):
+    def __init__(self, observation_space: gym.Space, features_dim: int = 256):
         super(BasicCustomCNN, self).__init__(observation_space, features_dim)
         # We assume CxHxW images (channels first)
 
@@ -16,15 +16,21 @@ class BasicCustomCNN(BaseFeaturesExtractor):
         W = observation_space.shape[2]
 
         self.cnn = nn.Sequential(
-            nn.Conv2d(in_channels=C, out_channels=32, kernel_size=3, stride=1, padding=1),
+            nn.Conv2d(
+                in_channels=C, out_channels=32, kernel_size=3, stride=1, padding=1
+            ),
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2, stride=2),
-            nn.Conv2d(in_channels=32, out_channels=32, kernel_size=3, stride=1, padding=1),
+            nn.Conv2d(
+                in_channels=32, out_channels=32, kernel_size=3, stride=1, padding=1
+            ),
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2, stride=2),
-            nn.Conv2d(in_channels=32, out_channels=64, kernel_size=3, stride=1, padding=1),
+            nn.Conv2d(
+                in_channels=32, out_channels=64, kernel_size=3, stride=1, padding=1
+            ),
             nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2, stride=2)
+            nn.MaxPool2d(kernel_size=2, stride=2),
         )
 
         # take auto number of pixels after cnn
@@ -35,7 +41,7 @@ class BasicCustomCNN(BaseFeaturesExtractor):
 
         self._initialize_weights()
 
-    def _get_output_shape_cnn(self, C, H, W):
+    def _get_output_shape_cnn(self, C: int, H: int, W: int) -> int:
         random_observation = torch.rand(1, C, H, W)
         with torch.no_grad():
             x = self.cnn(random_observation)
@@ -43,7 +49,7 @@ class BasicCustomCNN(BaseFeaturesExtractor):
 
         return x.size()[1]
 
-    def _initialize_weights(self):
+    def _initialize_weights(self) -> None:
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
                 init.xavier_uniform_(m.weight, gain=init.calculate_gain("relu"))
@@ -54,7 +60,7 @@ class BasicCustomCNN(BaseFeaturesExtractor):
                 if m.bias is not None:
                     init.constant_(m.bias, 0)
 
-    def forward(self, observations):
+    def forward(self, observations: Tensor) -> Tensor:
         # Forward pass through the cnn
         x = self.cnn(observations)
 
@@ -68,7 +74,7 @@ class BasicCustomCNN(BaseFeaturesExtractor):
 
 
 class CustomMLP(BaseFeaturesExtractor):
-    def __init__(self, observation_space, features_dim):
+    def __init__(self, observation_space: gym.Space, features_dim: int):
         super(CustomMLP, self).__init__(observation_space, features_dim)
 
         # Here should be dim of observation_space
@@ -86,6 +92,6 @@ class CustomMLP(BaseFeaturesExtractor):
             nn.ReLU(),
         )
 
-    def forward(self, observations):
+    def forward(self, observations: Tensor):
         # Forward pass through the MLP
         return self.mlp(observations)

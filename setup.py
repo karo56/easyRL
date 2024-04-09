@@ -1,4 +1,4 @@
-from setuptools import Extension, find_packages, setup
+from setuptools import find_packages, setup
 
 with open("requirements.txt", "r") as f:
     install_requires = f.read().split("\n")
@@ -11,7 +11,7 @@ setup(
     version="1.0.0",
     author="Karol Muck",
     author_email="karo56.56@gmail.com",
-    description="Package to run RL experiments on gym envs with stable-baseline3 library",
+    description="Package to run RL experiments on gym envs with stable-baseline3 library",  # noqa
     long_description=long_description,
     license="MIT",
     packages=find_packages(),
