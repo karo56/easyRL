@@ -1,12 +1,12 @@
 import datetime as dt
 import os
 
-import yaml
 import hydra
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import streamlit as st
+import yaml
 from omegaconf import DictConfig
 
 from easyRL import get_project_root
@@ -51,8 +51,9 @@ def _format_timedelta(delta):  # TODO: add descriptions
 
     return f"{days} days {hours} hours {minutes} minutes"
 
+
 def _read_yaml_config(config_path):
-    with open(config_path, 'r') as yaml_file:
+    with open(config_path, "r") as yaml_file:
         config_dict = yaml.safe_load(yaml_file)
     return config_dict
 
@@ -60,7 +61,9 @@ def _read_yaml_config(config_path):
 def dashboard_print_estimation_times(df_monitor, experiment_path):
     steps_number = df_monitor["l"].sum()
 
-    config_dict = _read_yaml_config(os.path.join(experiment_path, "params", "config.yaml"))
+    config_dict = _read_yaml_config(
+        os.path.join(experiment_path, "params", "config.yaml")
+    )
     training_steps = config_dict["total_timesteps"]
 
     description_path = os.path.join(experiment_path, "description.txt")

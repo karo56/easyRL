@@ -46,7 +46,7 @@ def main(cfg: DictConfig):
     log.info(f"Start preparing training envs (numer of envs: {cfg.n_envs:_})")
 
     def make_custom_env():
-        # TODO: fix it
+        # T
         env = prepare_env(**cfg.env)
         return env
 
@@ -99,12 +99,11 @@ def main(cfg: DictConfig):
     model.save(dirs["model"])
     log.info(f"Model saved in dir: {dirs['model']}")
 
-
-
     log.info("Start evaluating model")
     evaluate_and_make_gif(val_env, model, cfg.eval_games_number, dirs)
 
     log.info("Everything is done! Bye! bye!")
+
 
 if __name__ == "__main__":
     main()

@@ -11,7 +11,7 @@ Here you can find output folder. When you run every experiment, all outputs from
 Every experiment is saved in convention: ```env_name/rl_algo_name/ID_experiment_name```
 
 An example folder looks like this:
-![](https://github.com/karo56/easyRL/blob/images/ouptput_folder.png)
+![](https://github.com/karo56/easyRL/blob/images/output_folder.png)
 
 
 _Note: experiment folder is added to .gitignore, so you won't add this heavy files into git tracking_

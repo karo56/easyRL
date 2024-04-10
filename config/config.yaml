@@ -34,5 +34,5 @@ path_to_outputs: "outputs/experiments"
 description: "This is experiment description, we can write whatever we want"
 experiment_name: "name"
 
-# TODO: XXXXXXXXXXXX number of games to generate gif
+# number of games to eval on validation environment (with frequency: eval_frequency)
 eval_games_number: 1

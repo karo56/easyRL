@@ -94,13 +94,16 @@ To run every RL experiment we should have structured pipeline.
 For easyRL we propose the following pipeline structure:
 ![](https://github.com/karo56/easyRL/blob/images/pipeline.png)
 
+
+⚠️⚠️⚠️ Every experiment is saved in folder outputs with structure:
+```outputs/experiments/<env_name>/<algo_type>/<ID_experiment_name>``` (this folder is created automatically)
+
+To see more details go to [outputs/README.md](outputs%2FREADME.md)
+
 ### Description of files
 
 
 This library have standard and simply structure. Diagram below explain what each file is.
-
-It is worth mentioning that every experiment is saved in folder outputs with structure:
-```outputs/experiments/<env_name>/<algo_type>/<ID_experiment_name>``` (this folder is created automatically)
 
 ```
 ├── bash                    <- All bash scripts
@@ -290,6 +293,10 @@ path_to_outputs: "outputs/experiments"
 # description of experiment
 description: "This is experiment description, we can write whatever we want"
 experiment_name: "name"
+
+# number of games to eval on validation environment (with frequency: eval_frequency)
+eval_games_number: 1
+
 ```
 **Of course we can change all of parameters not only one or defult env/model/policy_net etc.**
 
@@ -481,7 +488,8 @@ _Note: It is impossible to not use stable-baseline3 as library with implementati
 <details>
 <summary><b>How to add own net architectures? </b></summary>
 
-TODO
+Please reade example: TODO
+
 </details>
 
 
@@ -531,7 +539,7 @@ TODO
 
 and go to localhost.
 
-##  F&Q
+##  FAQ
 <details>
 <summary><b>Why don't we use any library to track experiments? </b></summary>
 
@@ -549,12 +557,9 @@ Now we have to define render mode when env is inited, so we should use "rgb_arra
 
 <details>
 <summary><b>How to track experiments? </b></summary>
-TODO
-</details>
 
-<details>
-<summary><b> How to use it package? </b></summary>
-TODO
+You can use dashboard created by myself or tensorboard logger.
+Go to [dashboard](#dashboard) section to see more details.
 </details>
 
 
