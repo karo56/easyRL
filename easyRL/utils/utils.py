@@ -38,7 +38,6 @@ def create_experiment_folder(
     os.mkdir(new_path)
 
     list_of_folders = [
-        "plots",
         "logger",
         "tensorboard",
         "params",
