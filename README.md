@@ -505,12 +505,11 @@ bash bash/run_dashboard.sh
 ```
 Now, just go to http://localhost:8501 choose your env, algorithm and experiment to see how it performs.
 
-TODO add figure
-
+![](https://github.com/karo56/easyRL/blob/images/dashboard_1.png)
 When you choose your env/algorithm/experiment you have to click "Refresh experiment" button.
 If the experiment is going on you have to click this button to ... refresh experiment 😐 
 
-TODO add figure
+![](https://github.com/karo56/easyRL/blob/images/dashboard_2.png)
 
 When you refresh experment you can see some nice plots, and estimation when experiments.
 
