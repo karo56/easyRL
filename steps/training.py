@@ -95,6 +95,12 @@ def main(cfg: DictConfig):
     log_to_description(path=dirs["experiment_path"], message=message)
     log_training_time(path=dirs["experiment_path"])
 
+    log.info("Saving model")
+    model.save(dirs["model"])
+    log.info(f"Model saved in dir: {dirs['model']}")
+
+
+
     log.info("Start evaluating model")
     evaluate_and_make_gif(val_env, model, cfg.eval_games_number, dirs)
 

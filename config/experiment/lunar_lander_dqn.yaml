@@ -4,4 +4,4 @@ defaults:
   - override /model: dqn
   - override /policy_net: default
 
-experiment_name: "mountain_car_with_dqn"
+experiment_name: "lunar_lander_with_dqn"
