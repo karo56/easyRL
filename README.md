@@ -28,7 +28,7 @@ on multiple models on multiple network architectures?
 We can use the library/template **easyRL** ☺️
 
 These repository use the stable-baseline3 library and it's functions to make simple
-experimenting with ability to easy change models/architectures and RL environments and the hydra library to manage all configs.
+experimenting with ability to easy change models/architectures and RL environments with the hydra library to manage all configs.
 If you have your own RL environment and want to train any net on it, instead of writing everything from scratch, you can use this code.
 
 The main advantages of the library:
@@ -96,6 +96,7 @@ For easyRL we propose the following pipeline structure:
 
 
 ⚠️⚠️⚠️ Every experiment is saved in folder outputs with structure:
+
 ```outputs/experiments/<env_name>/<algo_type>/<ID_experiment_name>``` (this folder is created automatically)
 
 To see more details go to [outputs/README.md](outputs%2FREADME.md)
@@ -201,7 +202,13 @@ experiment_name: "pong_with_cnn_poo"
 
 Now, we create config params file ```mountain_car_a2c.yaml```:
 ```yaml
-TODO
+# @package _global_
+defaults:
+  - override /env: mountain_car
+  - override /model: a2c
+  - override /policy_net: default
+
+experiment_name: "mountain_car_a2c"
 ```
 
 You switch experiments and params just change one line in file ```bash/run_training.sh``` file
@@ -444,16 +451,28 @@ I hope this is super simply (if not, let me know! 😭) and below you can find s
 Stable-baseline3 can use only Gymnasium envs, so if you can use this easyRL for all envs from 
 [list](https://www.gymlibrary.dev/index.html).
 
-If you want to create custom env this have to written in Gym convention. This shouldn't be 
-a big problem, because most of environments are written in this convention.
+If you want to create custom env, it has to written in Gym convention. This shouldn't be 
+a big problem, because most environments are written in this convention. 
+After this you can just create file  ```config/env/my_custom_env.yaml``` which should looks like below:
+```yaml
+env_name: easyRL.prepare_env.custom_envs.MyCustomEnv
+render_mode: None
+size: 5
+```
 
-TODO Duckietown
+
 </details>
 
 <details>
 <summary><b>How to add own wrappers?</b></summary>
 
-TODO
+For some envs you want to change rewards, actions (for example making it discrete) or even change observation space.
+In gymnasium (or gym) you can use wrapper's to easy change it. See how to use it in [documentations](https://gymnasium.farama.org/api/wrappers/). 
+Using easyRL you can just add wrappers to dir ```easyRL/custom_wrappers/wrappers.py```. 
+
+See some examples:
+
+
 </details>
 
 

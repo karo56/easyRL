@@ -9,7 +9,7 @@ from stable_baselines3.common.env_util import make_vec_env
 from stable_baselines3.common.vec_env import VecMonitor
 
 from easyRL import get_project_root
-from easyRL.curstom_wrappers.callbacks import MakeGifCallback
+from easyRL.custom_wrappers.callbacks import MakeGifCallback
 from easyRL.prepare_env.prepare_env import prepare_env
 from easyRL.utils.utils import (
     create_experiment_folder,
